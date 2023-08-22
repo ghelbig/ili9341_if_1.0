@@ -43,14 +43,16 @@ work/text_pack.o: text_pack.vhd
 	$(GHDL) -a $(GHDLFLAGS) $<
 work/ili9341_if_core.o: ../hdl/ili9341_if_core.vhd
 	$(GHDL) -a $(GHDLFLAGS) $<
-work/lcd_iobuf.o: ../hdl/lcd_iobuf.vhd
-	$(GHDL) -a $(GHDLFLAGS) -Punisim  $<
-work/ili9341_if_v1_0.o: ../hdl/ili9341_if_v1_0.vhd
+work/IOBUF.o: IOBUF.vhd
 	$(GHDL) -a $(GHDLFLAGS) $<
-work/ILI9341_model.o: ILI9341_model.vhd
+work/lcd_iobuf.o: ../hdl/lcd_iobuf.vhd work/IOBUF.o
+	$(GHDL) -a $(GHDLFLAGS) -Punisim $<
+work/ili9341_if_v1_0.o: ../hdl/ili9341_if_v1_0.vhd work/lcd_iobuf.o
+	$(GHDL) -a $(GHDLFLAGS) -Punisim $<
+work/ILI9341_model.o: ILI9341_model.vhd work/text_pack.o
 	$(GHDL) -a $(GHDLFLAGS) $<
-work/ili9341_if_v1_0_tb.o: ili9341_if_v1_0_tb.vhd
-	$(GHDL) -a $(GHDLFLAGS) $<
+work/ili9341_if_v1_0_tb.o: ili9341_if_v1_0_tb.vhd work/text_pack.o
+	$(GHDL) -a $(GHDLFLAGS) -Punisim $<
 work/axi_pack.o: axi4_pack.vhd
 	$(GHDL) -a $(GHDLFLAGS) $<
 
