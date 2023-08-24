@@ -6,7 +6,7 @@
 -- Author     : Gary Helbig  <ghelbig@designedtowork.com>
 -- Company    : 
 -- Created    : 2023-08-05
--- Last update: 2023-08-19
+-- Last update: 2023-08-21
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -19,6 +19,7 @@
 -- 2023-08-05  1.0      ghelbig Created
 -- 2023-08-13  1.0      ghelbig Two additional Registers
 -- 2023-08-19  1.1      ghelbig Reg3 -> Wide Write Register
+-- 2023-08-21  1.2      ghelbig Invert reset: 1->assert
 -------------------------------------------------------------------------------
 
 library ieee;
@@ -168,7 +169,7 @@ architecture rtl of ili9341_if_core is
   constant S_WIDTH   : integer := integer(CEIL(LOG2(real(MAX(RD_CLOCKS, WR_CLOCKS)+1))));
   signal strobe_cntr : unsigned(S_WIDTH-1 downto 0);
 
-  signal reset_reg : std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0) := (0      => '1', others => '0');
+  signal reset_reg : std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0) := (others => '0');
   signal spare_reg : std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0) := (others => '0');
 
   constant zero_vec : std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0) := (others => '0');
@@ -191,7 +192,7 @@ begin
 --  lcd_d   <= lcd_wrdd when lcd_wroe = '1' else (others => 'Z');
   lcd_di  <= lcd_wrdd;
   lcd_dt  <= not lcd_wroe;
-  lcd_rst <= reset_reg(0);
+  lcd_rst <= not reset_reg(0);
 
   --  Try it as (just one) state machine
   --
@@ -205,7 +206,7 @@ begin
       lcd_wr      <= '1';
       lcd_rs      <= '0';
       lcd_cs      <= '1';
-      reset_reg   <= (0      => '1', others => '0');  -- start with lcd_rst high
+      reset_reg   <= (others => '0');   -- start with lcd_rst high
       spare_reg   <= (others => '0');
       axi_awready <= '0';
       axi_wready  <= '0';

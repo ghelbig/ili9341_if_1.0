@@ -214,7 +214,7 @@ begin
     --  Assert reset
     axi4_write (
       addr      => (3 => '1', others => '0'),
-      data      => X"00000000",
+      data      => X"00000001",
       wstrobe   => "0001",
       a_clock   => s00_axi_aclk,
       a_addr    => s00_axi_awaddr,
@@ -230,7 +230,7 @@ begin
     --  Remove reset
     axi4_write (
       addr      => (3 => '1', others => '0'),
-      data      => X"00000001",
+      data      => X"00000000",
       wstrobe   => "0001",
       a_clock   => s00_axi_aclk,
       a_addr    => s00_axi_awaddr,
