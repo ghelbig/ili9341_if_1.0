@@ -16,7 +16,7 @@ all: ili9341_if_v1_0_tb
 #	$(GHDL) -e $(GHDLFLAGS) $@
 
 # Elaboration target
-ili9341_if_v1_0_tb: work/ili9341_if_core.o work/lcd_iobuf.o work/ili9341_if_v1_0.o work/axi4_pack.o work/ILI9341_model.o work/ili9341_if_v1_0_tb.o
+ili9341_if_v1_0_tb: work/ili9341_if_core.o work/lcd_iobuf.o work/ili9341_if_v1_0.o work/axi4_pack.o work/ILI9341_model.o work/ili9341_if_v1_0_tb.o work/IOBUF.o
 	$(GHDL) -e $(GHDLFLAGS) $(GHDLELABFLAGS) $@
 
 
@@ -45,16 +45,22 @@ work/ili9341_if_core.o: ../hdl/ili9341_if_core.vhd
 	$(GHDL) -a $(GHDLFLAGS) $<
 work/IOBUF.o: IOBUF.vhd
 	$(GHDL) -a $(GHDLFLAGS) $<
-work/lcd_iobuf.o: ../hdl/lcd_iobuf.vhd work/IOBUF.o
+work/lcd_iobuf.o: ../hdl/lcd_iobuf.vhd
 	$(GHDL) -a $(GHDLFLAGS) -Punisim $<
-work/ili9341_if_v1_0.o: ../hdl/ili9341_if_v1_0.vhd work/lcd_iobuf.o
-	$(GHDL) -a $(GHDLFLAGS) -Punisim $<
+work/ili9341_if_v1_0.o: ../hdl/ili9341_if_v1_0.vhd
+	$(GHDL) -a $(GHDLFLAGS) $<
 work/ILI9341_model.o: ILI9341_model.vhd work/text_pack.o
 	$(GHDL) -a $(GHDLFLAGS) $<
 work/ili9341_if_v1_0_tb.o: ili9341_if_v1_0_tb.vhd work/text_pack.o
-	$(GHDL) -a $(GHDLFLAGS) -Punisim $<
+	$(GHDL) -a $(GHDLFLAGS) $<
 work/axi_pack.o: axi4_pack.vhd
 	$(GHDL) -a $(GHDLFLAGS) $<
+
+unisim: unisim/unisim_VCOMP.o unisim/IOBUF.o
+unisim/unisim_VCOMP.o:
+	$(GHDL) -a --workdir=unisim --work=unisim --ieee=synopsys $XILINX_VIVADO/data/vhdl/src/unisims/unisim_VCOMP.vhd
+unisim/IOBUF.o:
+	$(GHDL) -a --workdir=unisim --work=unisim --ieee=synopsys $XILINX_VIVADO/data/vhdl/src/unisims/primitive/IOBUF.vhd
 
 # Files dependences
 /home/ghelbig/bin/ghdl/lib/ghdl/v93/ieee/std_logic_1164.o: 
