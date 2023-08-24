@@ -3,6 +3,10 @@ AXI4-lite Interface for for an Arduino TFT shield
 
 It is intended that this archive can be cloned into a Vivado ip_repo and used in and block diagram.
 
+Manually pull in (add to project) the appropriate constraint file from the xdc folder.
+
+Software is a work in progress.
+
 
 File structure for this archive:
 
