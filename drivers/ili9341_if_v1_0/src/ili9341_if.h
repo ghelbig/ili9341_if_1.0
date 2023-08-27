@@ -1,3 +1,10 @@
+// *
+// * ili9341_if.h
+// *
+// *    BSP routines for using the interface
+// *
+// *  25-Aug, 2023 - Gary Helbig
+// *
 
 #ifndef ILI9341_IF_H
 #define ILI9341_IF_H
@@ -12,6 +19,32 @@
 #define ILI9341_IF_S00_AXI_SLV_REG2_OFFSET 8
 #define ILI9341_IF_S00_AXI_SLV_REG3_OFFSET 12
 
+volatile u32 *tft_command;
+volatile u32 *tft_data;
+volatile u32 *tft_reset;
+volatile u16 *tft_data16;
+volatile u32 *tft_data32;
+
+/************************** Function Definitions ***************************/
+
+//  ili9341_if_init
+//  - Set up the pointers (defined above)
+//    to the tft register(s).
+//
+void ili9341_if_init(u32 BASEADDR);
+
+//  ili9341_tft_reset
+//  - Assert or de-assert the TFT reset.
+//
+void ili9341_tft_reset(_Bool assert);
+
+//  Writing to the TFT.
+//  - Use the names found in the GFX library.
+//
+void ili9341_writecommand8(u32 cmd);
+void ili9341_writedata8(u32 data);
+void ili9341_writedata16(u16 data);
+void ili9341_writedata32(u32 data);
 
 /**************************** Type Definitions *****************************/
 /**

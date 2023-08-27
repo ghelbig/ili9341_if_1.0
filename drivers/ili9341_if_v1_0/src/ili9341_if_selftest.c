@@ -33,7 +33,7 @@ XStatus ILI9341_IF_Reg_SelfTest(void * baseaddr_p)
 	u32 baseaddr;
 	int write_loop_index;
 	int read_loop_index;
-	int Index;
+//	int Index;
 
 	baseaddr = (u32) baseaddr_p;
 
@@ -49,7 +49,7 @@ XStatus ILI9341_IF_Reg_SelfTest(void * baseaddr_p)
 	for (write_loop_index = 3 ; write_loop_index < 4; write_loop_index++)
 	  ILI9341_IF_mWriteReg (baseaddr, write_loop_index*4, (write_loop_index+1)*READ_WRITE_MUL_FACTOR);
 	for (read_loop_index = 3 ; read_loop_index < 4; read_loop_index++)
-	  if ( ILI9341_IF_mReadReg (baseaddr, read_loop_index*4) != (read_loop_index+1)*READ_WRITE_MUL_FACTOR){
+            if ( ILI9341_IF_mReadReg (baseaddr, read_loop_index*4) != (u32)(read_loop_index+1)*READ_WRITE_MUL_FACTOR){
 	    xil_printf ("Error reading register value at address %x\n", (int)baseaddr + read_loop_index*4);
 	    return XST_FAILURE;
 	  }
